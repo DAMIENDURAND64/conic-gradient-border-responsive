@@ -1,23 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useRef, useCallback } from "react";
+import styled from "styled-components";
+import "./App.css";
+
+const Card = styled.div`
+  --startDeg: 0deg;
+  inline-size: 50vmin;
+  block-size: 50vmin;
+
+  border: 0.5vmin solid hsl(100 100% 60%);
+  border-image-slice: 1;
+
+  border-image-source: conic-gradient(
+    from var(--startDeg, 5deg),
+    hsl(300, 100%, 50%),
+    hsl(0, 0%, 0%),
+    hsl(0, 0%, 0%),
+    hsl(270, 67%, 47%)
+  );
+
+  display: grid;
+  place-content: center;
+  padding: 4ch;
+  box-sizing: border-box;
+  font-size: 15vmin;
+  color: white;
+`;
 
 function App() {
+  const cardRef = useRef();
+
+  const mouseMoveListener = useCallback(({ clientX, clientY }) => {
+    const card = cardRef.current;
+    const { x, y, width, height } = card.getBoundingClientRect();
+    const dx = clientX - (x + 0.5 * width);
+    const dy = clientY - (y + 0.5 * height);
+    const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+
+    card.style.setProperty("--startDeg", `${angle + 90}deg`);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("mousemove", mouseMoveListener, false);
+    return () => window.removeEventListener("mousemove", mouseMoveListener);
+  }, [mouseMoveListener]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="background">
+      <Card ref={cardRef}>Conic Gradient Border</Card>
     </div>
   );
 }
