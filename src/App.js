@@ -4,25 +4,24 @@ import "./App.css";
 
 const Card = styled.div`
   --startDeg: 0deg;
-  inline-size: 50vmin;
-  block-size: 50vmin;
+  inline-size: 190vmin;
+  block-size: 90vmin;
+  box-shadow: 0px 0px 10px 10px #444;
 
-  border: 0.5vmin solid hsl(100 100% 60%);
+  border: 1vmin solid hsl(100 100% 60%);
   border-image-slice: 1;
 
   border-image-source: conic-gradient(
     from var(--startDeg, 5deg),
-    hsl(300, 100%, 50%),
+    hsl(0, 0%, 100%),
     hsl(0, 0%, 0%),
-    hsl(0, 0%, 0%),
-    hsl(270, 67%, 47%)
+    hsl(0, 0%, 100%)
   );
 
   display: grid;
   place-content: center;
   padding: 4ch;
-  box-sizing: border-box;
-  font-size: 15vmin;
+  font-size: 10vmin;
   color: white;
 `;
 
@@ -45,7 +44,7 @@ function App() {
   }, [mouseMoveListener]);
 
   return (
-    <div className="background">
+    <div className="background h-screen flex justify-center items-center ">
       <Card ref={cardRef}>Conic Gradient Border</Card>
     </div>
   );
